@@ -19,6 +19,12 @@ app.config(['$routeProvider', function($routeProvider){
         controller: "FrontController",
         controllerAs: 'ctrl',
         title: 'Login'
+    }).
+     when('/add-page.html', {
+        templateUrl: '/templates/add-page.html',
+        controller: "FrontController",
+        controllerAs: 'ctrl',
+        title: 'Ajout de nouvelle page'
     })
 }]);
 
