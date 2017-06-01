@@ -7,6 +7,18 @@ app.config(['$routeProvider', function($routeProvider){
         controller: "FrontController",
         controllerAs: 'ctrl',
         title: 'homepage'
+    }).
+    when('/register.html', {
+        templateUrl: '/templates/register.html',
+        controller: "FrontController",
+        controllerAs: 'ctrl',
+        title: 'Register'
+    }).
+    when('/login.html', {
+        templateUrl: '/templates/login.html',
+        controller: "FrontController",
+        controllerAs: 'ctrl',
+        title: 'Login'
     })
 }]);
 
@@ -39,6 +51,13 @@ app.directive('login', ['$http', function($http){
 }]);
 
 app.directive('titre', ['$http', function($http){
+    return {
+        restrict: 'EA',
+        templateUrl: '/templates/login.html'
+    }
+}]);
+
+app.directive('login', ['$http', function($http){
     return {
         restrict: 'EA',
         templateUrl: '/templates/login.html'
