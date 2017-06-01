@@ -2,6 +2,14 @@ body {
   margin: 0;
 }
 
+h1{
+  text-align: center;
+}
+
+/*nav.col-lg-12 {
+  padding: 0;
+}*/
+
 .menu {
   display: flex;
   justify-content: flex-end;
@@ -19,4 +27,8 @@ body {
   padding: 20px;
   text-decoration: none;
   color: white;
+}
+
+.menu li a:hover {
+  background: grey;
 }
