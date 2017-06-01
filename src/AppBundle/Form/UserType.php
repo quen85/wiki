@@ -20,14 +20,7 @@ class UserType extends AbstractType
         $builder
             ->add('status', TextType::class, array('label' => 'Status'))
             ->add('email', EmailType::class, array('label' => 'Email'))
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'invalid_message' => 'The password fields must match.',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'required' => true,
-                'first_options' => ['label' => 'Password'],
-                'second_options' => ['label' => 'Type the password again'],
-            ])
+            ->add('password', PasswordType::class)
             ->add('pseudonyme', TextType::class, array('label' => 'Pseudonyme'))
         ;
     }

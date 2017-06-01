@@ -27,7 +27,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=255, unique=true)
+     * @ORM\Column(name="status", type="string", length=255)
      */
     private $status;
 
@@ -48,7 +48,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="pseudonyme", type="string", length=255, unique=true)
+     * @ORM\Column(name="pseudonyme", type="string", length=255)
      */
     private $pseudonyme;
 

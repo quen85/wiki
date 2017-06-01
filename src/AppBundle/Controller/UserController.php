@@ -12,6 +12,8 @@ use AppBundle\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\Annotations as FosRest;
+use FOS\RestBundle\Controller\Annotations\RequestParam;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 
 class UserController extends Controller
 {
@@ -47,22 +49,26 @@ class UserController extends Controller
     /**
      * @FosRest\View(statusCode=Response::HTTP_CREATED)
      * @FosRest\Post("/signup")
+     * @RequestParam(name="pseudonyme", nullable=false, description="test")
+     * @RequestParam(name="email", nullable=false, description="test")
+     * @RequestParam(name="password", nullable=false, description="test")
      */
-    public function postUsersAction(Request $request)
+    public function postUsersAction(ParamFetcherInterface $paramFetcher)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
 
-        $form->submit($request->request->all());
+        $user->setPseudonyme($paramFetcher->get('pseudonyme'));
+        $user->setEmail($paramFetcher->get('email'));
+        $user->setPassword($paramFetcher->get('password'));
+        $user->setStatus(1);
 
-        if ($form->isValid()) {
-            $em = $this->get('doctrine.orm.entity_manager');
-            $em->persist($user);
-            $em->flush();
-            return $user;
-        } else {
-            return $form;
-        }
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->flush();
+        //     return $user;
+        // } else {
+        //     return $form;
+        // }
     }
 
 }
