@@ -9,3 +9,7 @@ pages:
 fos_rest:
     type: rest
     resource: routing_api.yml
+
+users:
+    type:     rest
+    resource: AppBundle\Controller\UserController

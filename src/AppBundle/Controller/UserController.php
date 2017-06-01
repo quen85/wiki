@@ -6,37 +6,63 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\UserType;
 use AppBundle\Entity\User;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use FOS\RestBundle\Controller\Annotations as FosRest;
 
 class UserController extends Controller
 {
     /**
-     * @Route("/signup", name="app_signup")
-     * @Method("GET|POST")
+     * @return string
+     *
+     * @FosRest\Get("/users")
      */
-    public function signupAction(Request $request)
+    public function getUsersAction(Request $request)
+    {
+        $users = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:User')
+                ->findAll();
+
+        return $users;
+    }
+
+    /**
+     * @return string
+     *
+     * @FosRest\Get("/users/{id}")
+     */
+    public function getUserAction(Request $request)
+    {
+        $user = $this->get('doctrine.orm.entity_manager')
+                ->getRepository('AppBundle:User')
+                ->find($request->get('id'));
+        /* @var $user User */
+
+        return $user;
+    }
+
+    /**
+     * @FosRest\View(statusCode=Response::HTTP_CREATED)
+     * @FosRest\Post("/signup")
+     */
+    public function postUsersAction(Request $request)
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
-        $form->add('save', SubmitType::class);
 
-        $form->handleRequest($request);
+        $form->submit($request->request->all());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $encoder = $this->get('security.password_encoder');
-            $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
+        if ($form->isValid()) {
+            $em = $this->get('doctrine.orm.entity_manager');
             $em->persist($user);
             $em->flush();
-
-            return $this->redirectToRoute('app_game_play');
+            return $user;
+        } else {
+            return $form;
         }
-
-        return $this->render('user/signup.html.twig', [
-            'form' => $form->createView(),
-        ]);
     }
 
 }
