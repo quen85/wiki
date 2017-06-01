@@ -6,4 +6,6 @@ pages:
     type:     rest
     resource: AppBundle\Controller\PageController
 
-
+fos_rest:
+    type: rest
+    resource: routing_api.yml

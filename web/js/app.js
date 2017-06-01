@@ -13,7 +13,7 @@ app.config(['$routeProvider', function($routeProvider){
 app.run(['$rootScope', '$route', function($rootScope, $route) {
     $rootScope.$route = $route;
     $rootScope.$on('$routeChangeSuccess', function() {
-        // Si on veux faire des trucs au changement de page
+
     });
 }]);
 
@@ -31,9 +31,16 @@ app.directive('footer', ['$http', function($http){
     }
 }]);
 
+app.directive('login', ['$http', function($http){
+    return {
+        restrict: 'EA',
+        templateUrl: '/templates/bases/footer.html'
+    }
+}]);
+
 app.directive('titre', ['$http', function($http){
     return {
         restrict: 'EA',
-        templateUrl: '/templates/bases/title.html'
+        templateUrl: '/templates/login.html'
     }
 }]);
