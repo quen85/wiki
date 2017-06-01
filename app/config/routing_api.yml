@@ -7,10 +7,10 @@ pages:
     type: rest
     resource: AppBundle\Controller\PageController
 
-revisions:
-    type: rest
-    resource: AppBundle\Controller\PageRevisionController
+# revisions:
+#     type: rest
+#     resource: AppBundle\Controller\PageRevisionController
 
-ratings:
-    type: rest
-    resource: AppBundle\Controller\RatingController
+# ratings:
+#     type: rest
+#     resource: AppBundle\Controller\RatingController
