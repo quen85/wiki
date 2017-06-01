@@ -49,7 +49,7 @@ class UserController extends Controller
     /**
      * @FosRest\View(statusCode=Response::HTTP_CREATED)
      * @FosRest\Post("/signup")
-     * @RequestParam(name="pseudonyme", nullable=false, description="test")
+     * @RequestParam(name="username", nullable=false, description="test")
      * @RequestParam(name="email", nullable=false, description="test")
      * @RequestParam(name="password", nullable=false, description="test")
      */
@@ -57,10 +57,13 @@ class UserController extends Controller
     {
         $user = new User();
 
-        $user->setPseudonyme($paramFetcher->get('pseudonyme'));
+        $userManager = $this->get("fos_user.user_manager");
+        $user = $userManager->createUser();
         $user->setEmail($paramFetcher->get('email'));
-        $user->setPassword($paramFetcher->get('password'));
-        $user->setStatus(1);
+        $user->setUsername(ucfirst($paramFetcher->get('username')));
+        $user->setPlainPassword($paramFetcher->get('password'));
+        $user->setEnabled(1);
+       $userManager->updateUser($user);
 
         $em = $this->get('doctrine.orm.entity_manager');
         $em->persist($user);
