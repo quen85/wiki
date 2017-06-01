@@ -6,6 +6,15 @@ h1{
   text-align: center;
 }
 
+.connect{
+  margin: 0 auto;
+  text-align: center;
+  background-color: #d8d8d8;
+  height: 200px;
+  padding-top: 10px;
+}
+
+
 /*nav.col-lg-12 {
   padding: 0;
 }*/
