@@ -19,6 +19,19 @@ use Symfony\Component\Validator\Constraints\Time;
 
 class PageController extends Controller
 {
+    public function slugify($string)
+    {
+        $rule = 'NFD; [:Nonspacing Mark:] Remove; NFC';
+        $transliterator = \Transliterator::create($rule);
+        $string = $transliterator->transliterate($string);
+
+        return preg_replace(
+            '/[^a-z0-9]/',
+            '-',
+            strtolower(trim(strip_tags($string)))
+        );
+    }
+
     /**
      * @return string
      *
@@ -46,20 +59,32 @@ class PageController extends Controller
      *
      * @Post("/page")
      */
-    public function postPlacesAction(Request $request)
+    public function postPageAction(Request $request)
     {
-        $page = new page();
-        $form = $this->createForm(PageType::class, $page);
+        $page = new Page();
+        $pageRevision = new PageRevision();
+        $form = $this->createForm(PageType::class, $pageRevision);
 
         $form->submit($request->request->all());
+        $data = $form->getData();
 
         if ($form->isValid()) {
+            $em = $this->get('doctrine.orm.entity_manager');
             $page->setCreatedAt(new \DateTime());
             $page->setUpdatedAt(new \DateTime());
-            $page->setSlug($request->get('slug'));
+            $page->setSlug($this->slugify($data->title));
 
-            $em = $this->get('doctrine.orm.entity_manager');
             $em->persist($page);
+            $em->flush();
+
+            $pageRevision->setPageId($page->getId());
+            $pageRevision->setTitle($data->title);
+            $pageRevision->setContent($data->content);
+            $pageRevision->setStatus('online');
+            $pageRevision->setUpdatedBy('');
+            $pageRevision->setCreatedAt(new \DateTime());
+            $pageRevision->setUpdatedAt(new \DateTime());
+            $em->persist($pageRevision);
             $em->flush();
 
             return $page;
@@ -100,16 +125,23 @@ class PageController extends Controller
         $pageRevision = new PageRevision();
 
         $form = $this->createForm(PageType::class, $pageRevision);
-
         $form->submit($request->request->all());
 
         $data = $form->getData();
 
+
         if ($form->isValid()) {
             $em = $this->get('doctrine.orm.entity_manager');
-            $pageRevision->setPageId($page['id']);
+            $pageRevision->setPageId($page->id);
             $pageRevision->setTitle($data->title);
+            $pageRevision->setContent($data->content);
+            $pageRevision->setStatus('online');
+            $pageRevision->setUpdatedBy('');
+            $pageRevision->setCreatedAt(new \DateTime());
+            $pageRevision->setUpdatedAt(new \DateTime());
             $em->persist($pageRevision);
+            $em->flush();
+            $page->setUpdatedAt(new \DateTime());
             $em->flush();
             return $page;
         } else {
