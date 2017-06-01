@@ -1,3 +1,9 @@
 app:
-    resource: '@AppBundle/Controller/'
-    type: annotation
+    resource: "@AppBundle/Controller/DefaultController.php"
+    type:     annotation
+
+pages:
+    type:     rest
+    resource: AppBundle\Controller\PageController
+
+
