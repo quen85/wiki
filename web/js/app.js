@@ -49,13 +49,6 @@ app.directive('footer', ['$http', function($http){
     }
 }]);
 
-app.directive('login', ['$http', function($http){
-    return {
-        restrict: 'EA',
-        templateUrl: '/templates/bases/footer.html'
-    }
-}]);
-
 app.directive('titre', ['$http', function($http){
     return {
         restrict: 'EA',

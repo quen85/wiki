@@ -40,6 +40,26 @@ app.controller('FrontController',
               console.log(response)
             });
           }
+
+          $scope.all_post=function(){
+        		var req = {
+    				 method: 'GET',
+    				 url: '/page',
+    				 headers: {
+    				   'Content-Type': 'application/json'
+    				 },
+    				 data: {
+		               _title: $scope.title,
+		               _content: $scope.content
+    					}
+    				}
+    				$http(req).then(function(response){
+		              console.log(response)
+		            }, function(response){
+		              console.log(response)
+            });
+          }
+
         }
     ]
 );
