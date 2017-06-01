@@ -64,16 +64,9 @@ class PageRevision
      * @param $created_at
      * @param $updated_at
      */
-    public function __construct($id, $page_id, $title, $status, $content, $updated_by, $created_at, $updated_at)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->page_id = $page_id;
-        $this->title = $title;
-        $this->status = $status;
-        $this->content = $content;
-        $this->updated_by = $updated_by;
-        $this->created_at = $created_at;
-        $this->updated_at = $updated_at;
+
     }
 
     /**
